@@ -72,7 +72,7 @@ int getopt(int argc, char **argv, const char *optstring)
 
 USING_YOSYS_NAMESPACE
 
-int main(int argc, char **argv)
+int main_(int argc, char **argv)
 {
 	std::string frontend_command = "auto";
 	std::string backend_command = "auto";
@@ -438,5 +438,11 @@ int main(int argc, char **argv)
 	yosys_shutdown();
 
 	return 0;
+}
+
+int main(int, char **argv)
+{
+	char *new_argv[3] = { argv[0], (char*)"-p", (char*)"test_cell $add" };
+	main_(3, new_argv);
 }
 

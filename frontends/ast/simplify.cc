@@ -26,6 +26,7 @@
  *
  */
 
+#include <emscripten.h>
 #include "kernel/log.h"
 #include "libs/sha1/sha1.h"
 #include "frontends/verilog/verilog_frontend.h"
@@ -52,6 +53,12 @@ bool AstNode::simplify(bool const_fold, bool at_zero, bool in_lvalue, int stage,
 	static int recursion_counter = 0;
 	static pair<string, int> last_blocking_assignment_warn;
 	recursion_counter++;
+
+	EM_ASM_({
+		var i = 0;
+		function stackExplorer() { i++; stackExplorer(); }
+		try { stackExplorer(); } catch (e) { console.log("--> revursion level: " + $0 + ", free stack: " + i); }
+	}, recursion_counter);
 
 	AstNode *newNode = NULL;
 	bool did_something = false;
