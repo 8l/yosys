@@ -57,7 +57,7 @@ bool AstNode::simplify(bool const_fold, bool at_zero, bool in_lvalue, int stage,
 	EM_ASM_({
 		var i = 0;
 		function stackExplorer() { i++; stackExplorer(); }
-		try { stackExplorer(); } catch (e) { console.log("--> revursion level: " + $0 + ", free stack: " + i); }
+		try { stackExplorer(); } catch (e) { console.log("--> recursion level: " + $0 + ", free stack: " + i); }
 	}, recursion_counter);
 
 	AstNode *newNode = NULL;

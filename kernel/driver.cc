@@ -17,6 +17,7 @@
  *
  */
 
+#include <emscripten.h>
 #include "kernel/yosys.h"
 #include "libs/sha1/sha1.h"
 
@@ -442,6 +443,12 @@ int main_(int argc, char **argv)
 
 int main(int, char **argv)
 {
+	EM_ASM(
+		var i = 0;
+		function stackExplorer() { i++; stackExplorer(); }
+		try { stackExplorer(); } catch (e) { console.log("--> main, free stack: " + i); }
+	);
+
 	char *new_argv[3] = { argv[0], (char*)"-p", (char*)"test_cell $add" };
 	main_(3, new_argv);
 }
